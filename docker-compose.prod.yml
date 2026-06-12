@@ -1,0 +1,16 @@
+# Production deployment — bakes source into image, data mounted at runtime.
+#
+# Usage:
+#   docker compose -f docker-compose.yml -f docker-compose.prod.yml up --build
+
+services:
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    command: node server.js
+    volumes:
+      - ./data:/data:ro
+    environment:
+      - NODE_ENV=production
+      - PROFILES_JSON_PATH=/data/profiles.json

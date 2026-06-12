@@ -1,0 +1,20 @@
+# Development overrides — Docker Compose merges this automatically on `docker compose up`.
+#
+# First-time setup (builds images):
+#   docker compose up --build
+#
+# Every run after that (NO rebuild needed):
+#   docker compose up
+
+services:
+  frontend:
+    command: npm run dev
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+      - /app/.next
+      - ./data:/data:ro
+    environment:
+      - PROFILES_JSON_PATH=/data/profiles.json
+      - WATCHPACK_POLLING=true
+      - CHOKIDAR_USEPOLLING=true

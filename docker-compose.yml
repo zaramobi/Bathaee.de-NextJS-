@@ -1,0 +1,17 @@
+# Run `docker compose up` for development (auto-merges docker-compose.override.yml).
+# Run `docker compose -f docker-compose.yml -f docker-compose.prod.yml up --build` for production.
+
+services:
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.dev
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      - PROFILES_JSON_PATH=/data/profiles.json
+
+networks:
+  default:
+    name: bathaee-net
