@@ -7,11 +7,22 @@ interface ProfilesJson {
   profiles: Profile[];
 }
 
+function findProfilesJson(): string {
+  if (process.env.PROFILES_JSON_PATH) return process.env.PROFILES_JSON_PATH;
+  // Search up from cwd so this works regardless of where the server is launched from
+  // (next dev runs from frontend/, standalone may run from frontend/.next/standalone/)
+  const cwd = process.cwd();
+  const candidates = [
+    path.join(cwd, "data", "profiles.json"),
+    path.join(cwd, "..", "data", "profiles.json"),
+    path.join(cwd, "..", "..", "data", "profiles.json"),
+    path.join(cwd, "..", "..", "..", "data", "profiles.json"),
+  ];
+  return candidates.find((p) => fs.existsSync(p)) ?? candidates[1];
+}
+
 function readProfilesJson(): ProfilesJson {
-  const filePath =
-    process.env.PROFILES_JSON_PATH ??
-    path.join(process.cwd(), "..", "data", "profiles.json");
-  const raw = fs.readFileSync(filePath, "utf-8");
+  const raw = fs.readFileSync(findProfilesJson(), "utf-8");
   return JSON.parse(raw) as ProfilesJson;
 }
 
