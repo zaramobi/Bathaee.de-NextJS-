@@ -31,9 +31,11 @@ from typing import Any
 # ---------------------------------------------------------------------------
 # Paths
 # ---------------------------------------------------------------------------
-REPO_ROOT = Path(__file__).parent
-PROFILES_JSON = REPO_ROOT / "data" / "profiles.json"
+from pathlib import Path
+import os
 
+BASE_DIR = Path(os.getenv("APP_DATA_DIR", Path.cwd()))
+PROFILES_JSON = BASE_DIR / "data" / "profiles.json"
 
 # ---------------------------------------------------------------------------
 # ID generation
