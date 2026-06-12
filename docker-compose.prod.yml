@@ -5,6 +5,7 @@
 
 services:
   frontend:
+    image: bathaee-frontend:prod
     build:
       context: ./frontend
       dockerfile: Dockerfile
